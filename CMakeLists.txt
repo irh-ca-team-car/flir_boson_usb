@@ -4,6 +4,7 @@ project(flir_boson_usb)
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -17,7 +18,7 @@ find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(camera_info_manager REQUIRED)
-find_package(OpenCV REQUIRED)
+pkg_search_module(PKG_OPENCV REQUIRED opencv4)
 
 add_executable(
   flir_boson_usb_node
@@ -38,8 +39,8 @@ ament_target_dependencies(
   image_transport
   cv_bridge
   sensor_msgs
-  OpenCV
 )
+target_link_libraries (flir_boson_usb_node ${PKG_OPENCV_LDFLAGS})
 
 install(TARGETS 
  flir_boson_usb_node
